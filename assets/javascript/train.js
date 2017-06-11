@@ -39,8 +39,8 @@
 			frequency: frequency,
 			nextArrival: nextArrival,
       timeAdded: firebase.database.ServerValue.TIMESTAMP
-
 		}); //END append dato to firebaseDB
+    $("#trainForm")[0].reset();
 
 	} //if(trainName != "" && destination !="" && frequency != "" && nextArrival != "")
 
@@ -95,4 +95,11 @@
   //  }));
 
 		// console.log(snapshot.val());
-	}); //database.ref('employee-data').on("child_added"
+	}); //.on("child_added"
+
+  //clear the form $('#form-id').children('input').val('')
+  // document.getElementById("trainForm").reset();
+  console.log("foo");
+  // $("#trainForm")[0].reset();
+  document.getElementById("trainForm").reset();
+  console.log("bar");
