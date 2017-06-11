@@ -49,24 +49,50 @@
 		var retrieveTrainSchedule = $('#thomasInfo');
 		database.ref('thomas-data').on("child_added", function(snapshot) {
 
-    var trainName = $('<td>').text(snapshot.val().trainName);
-    var destination = $('<td>').text(snapshot.val().destination);
-    var frequency = $('<td>').text(snapshot.val().frequency);
-    // var empty1 = $('<td>')
-    var nextArrival = $('<td>').text(snapshot.val().nextArrival);
-    var empty2 = $('<td>')
+    //prep variables
+    var trainName = snapshot.val().trainName;
+    var destination = snapshot.val().destination;
+    var frequency = snapshot.val().frequency;
+
+    //- check if nextArrival is in the past, if so adjust it according to frequency
+    var n = moment(snapshot.val().nextArrival, 'HH:mm')._i;
+    var now = moment().format('HH:mm');
+    if (n<now) {
+      // var nDate = moment().format("YYYY-MM-DD" + "T" + n + '00:000');
+      // console.log(moment(moment(nCurrent, 'HH:mm').add(frequency-1, 'm')._d).format("HH:mm"));
+
+      // first add frequency minutes to nextArrival
+      var convertCurrent = moment(moment()._d).format('HH:mm');
+      var currentArrival = moment(convertCurrent, 'HH:mm').add(frequency, 'm');
+      // console.log(moment(currentArrival).format('HH:mm'));
+
+      var nextArrival = moment(currentArrival).format('HH:mm');
+      // console.log(nextArrival);
+    }
+    else {
+      var nextArrival = snapshot.val().nextArrival;
+    }
+
+    var departure = moment().format("YYYY-MM-DD") + "T" + nextArrival + "00:000";
+    var minutesAway = moment(departure).diff(moment(), "minutes");
+    //add to DOM
+    var $trainName = $('<td>').text(trainName);
+    var $destination = $('<td>').text(destination);
+    var $frequency = $('<td>').text(frequency);
+    var $nextArrival = $('<td>').text(nextArrival);
+    var $minutesAway = $('<td>').text(minutesAway);
+
     retrieveTrainSchedule
      .append('<tr>')
-     .append(trainName)
-     .append(destination)
-     .append(frequency)
-    //  .append(empty1)
-     .append(nextArrival)
-     .append(empty2);
+     .append($trainName)
+     .append($destination)
+     .append($frequency)
+     .append($nextArrival)
+     .append($minutesAway);
 
   //    well.append(['name', 'email', 'age', 'comment'].map(item => {
   //    return $('<div>').attr('id', item).text(snapshot).val()[item]
   //  }));
 
-		console.log(snapshot.val());
+		// console.log(snapshot.val());
 	}); //database.ref('employee-data').on("child_added"
