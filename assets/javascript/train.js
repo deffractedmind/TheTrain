@@ -40,6 +40,7 @@
 			nextArrival: nextArrival,
       timeAdded: firebase.database.ServerValue.TIMESTAMP
 		}); //END append dato to firebaseDB
+    //clear the form $('#form-id').children('input').val('')
     $("#trainForm")[0].reset();
 
 	} //if(trainName != "" && destination !="" && frequency != "" && nextArrival != "")
@@ -74,12 +75,7 @@
     }
 
     var departure = moment().format("YYYY-MM-DD") + "T" + nextArrival + "00:000";
-    var minutesAway = moment(departure).diff(moment(), "minutes");
-    //add to DOM
-    var $trainName = $('<td>').text(trainName);
-    var $destination = $('<td>').text(destination);
-    var $frequency = $('<td>').text(frequency);
-    var $nextArrival = $('<td>').text(nextArrival);
+    var minutesAway = moment(departure).diff(moment(),   //clear the form $('#form-id').children('input').val('')
     var $minutesAway = $('<td>').text(minutesAway);
 
     retrieveTrainSchedule
@@ -96,10 +92,3 @@
 
 		// console.log(snapshot.val());
 	}); //.on("child_added"
-
-  //clear the form $('#form-id').children('input').val('')
-  // document.getElementById("trainForm").reset();
-  console.log("foo");
-  // $("#trainForm")[0].reset();
-  document.getElementById("trainForm").reset();
-  console.log("bar");
