@@ -30,8 +30,6 @@
 
 	//prevents input fields are not empty
 	if(trainName != "" && destination !="" && frequency != "" && nextArrival != "") {
-
-		//this should have an array of objects not sure how to set it up
 		//append data into firebaseDB
 		database.ref('thomas-data').push({
 			trainName: trainName,
@@ -40,7 +38,6 @@
 			nextArrival: nextArrival,
       timeAdded: firebase.database.ServerValue.TIMESTAMP
 		}); //END append dato to firebaseDB
-    //clear the form $('#form-id').children('input').val('')
     $("#trainForm")[0].reset();
 
 	} //if(trainName != "" && destination !="" && frequency != "" && nextArrival != "")
@@ -59,9 +56,6 @@
     var n = moment(snapshot.val().nextArrival, 'HH:mm')._i;
     var now = moment().format('HH:mm');
     if (n<now) {
-      // var nDate = moment().format("YYYY-MM-DD" + "T" + n + '00:000');
-      // console.log(moment(moment(nCurrent, 'HH:mm').add(frequency-1, 'm')._d).format("HH:mm"));
-
       // first add frequency minutes to nextArrival
       var convertCurrent = moment(moment()._d).format('HH:mm');
       var currentArrival = moment(convertCurrent, 'HH:mm').add(frequency, 'm');
@@ -75,7 +69,12 @@
     }
 
     var departure = moment().format("YYYY-MM-DD") + "T" + nextArrival + "00:000";
-    var minutesAway = moment(departure).diff(moment(),   //clear the form $('#form-id').children('input').val('')
+    var minutesAway = moment(departure).diff(moment(), "minutes");
+    //add to DOM
+    var $trainName = $('<td>').text(trainName);
+    var $destination = $('<td>').text(destination);
+    var $frequency = $('<td>').text(frequency);
+    var $nextArrival = $('<td>').text(nextArrival);
     var $minutesAway = $('<td>').text(minutesAway);
 
     retrieveTrainSchedule
